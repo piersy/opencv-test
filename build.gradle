@@ -1,0 +1,27 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+apply plugin: 'java'
+
+
+ext {
+    if (Os.isFamily(Os.FAMILY_UNIX)) {
+        opencv = "opencv-dependencies/Linux_3.13.0-32-generic_x86_64"
+    }
+}
+
+sourceCompatibility = 1.5
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile files("${opencv}/opencv-249.jar")
+}
+
+//Define the library path for the cv libs for any test tasks
+tasks.withType(Test) {
+    systemProperty "java.library.path", "${opencv}/lib"
+}
