@@ -1,17 +1,7 @@
-/**
- * Created by piers on 01/08/14.
- */
+import org.bytedeco.javacpp.opencv_objdetect;
 
-
-import org.opencv.contrib.FaceRecognizer;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfRect;
-import org.opencv.core.Point;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.highgui.Highgui;
-import org.opencv.objdetect.CascadeClassifier;
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_highgui.*;
 
 //
 // Detects faces in an image, draws boxes around them, and writes the results
@@ -23,27 +13,24 @@ public class DetectFaceDemo {
 
         // Create a face detector from the cascade file in the resources
         // directory.
-        CascadeClassifier faceDetector = new CascadeClassifier(getClass().getResource("/lbpcascade_frontalface.xml").getPath());
-        Mat image = Highgui.imread(getClass().getResource("/lena.png").getPath());
+        opencv_objdetect.CascadeClassifier faceDetector = new opencv_objdetect.CascadeClassifier(getClass().getResource("/lbpcascade_frontalface.xml").getPath());
+        Mat image = imread(getClass().getResource("/lena.png").getPath());
 
         // Detect faces in the image.
         // MatOfRect is a special container class for Rect.
-        MatOfRect faceDetections = new MatOfRect();
+        Rect faceDetections = new Rect();
         faceDetector.detectMultiScale(image, faceDetections);
 
-        System.out.println(String.format("Detected %s faces", faceDetections.toArray().length));
+        System.out.println(String.format("Detected %s faces", faceDetections));
 
         // Draw a bounding box around each face.
-        for (Rect rect : faceDetections.toArray()) {
-            Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
-        }
 
-        FaceRecognizer faceRecognizer;
+        rectangle(image, new Point(faceDetections.x(), faceDetections.y()), new Point(faceDetections.x() + faceDetections.width(), faceDetections.y() + faceDetections.height()), new Scalar(0, 255, 0, 0));
 
         // Save the visualized detection.
         String filename = "build/faceDetection.png";
         System.out.println(String.format("Writing %s", filename));
-        Highgui.imwrite(filename, image);
+        imwrite(filename, image);
     }
 }
 

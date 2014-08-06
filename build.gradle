@@ -1,15 +1,38 @@
-import org.apache.tools.ant.taskdefs.condition.Os
+import org.apache.tools.ant.taskdefs.condition.Os;
+
+task printProps << {
+            println
+}
 
 apply plugin: 'java'
 
-
+//Here we detect the os and whether the system is 32 or 64 bit and set the binary dependency classifier for opencv appropriately
+//we can see al the different classifications here - http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/2.4.9-0.9/
+//See different os names here
 ext {
+
     if (Os.isFamily(Os.FAMILY_UNIX)) {
-        opencv = "opencv-dependencies/Linux_3.13.0-32-generic_x86_64"
+        os = 'linux'
     }
+    if (Os.isFamily(Os.FAMILY_MAC)) {
+        os = 'macosx'
+    }
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        os = 'windows'
+    }
+    arch = System.getProperty("os.arch");
+
+    if(arch == 'amd64'){
+        arch = 'x86_64'
+    }
+    else{
+        arch = 'x86'
+    }
+    opencvBinaryClassifer = os+'-'+arch;
+
 }
 
-sourceCompatibility = 1.5
+
 version = '1.0'
 
 repositories {
@@ -17,11 +40,12 @@ repositories {
 }
 
 dependencies {
+    compile group: 'org.bytedeco', name: 'javacv', version: '0.9'
+    compile group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '2.4.9-0.8-2-SNAPSHOT', classifier: opencvBinaryClassifer
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile files("${opencv}/opencv-249.jar")
 }
 
-//Define the library path for the cv libs for any test tasks
-tasks.withType(Test) {
-    systemProperty "java.library.path", "${opencv}/lib"
-}
+////Define the library path for the cv libs for any test tasks
+//tasks.withType(Test) {
+//    systemProperty "java.library.path", "${opencv}/lib"
+//}
