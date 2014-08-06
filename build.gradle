@@ -25,9 +25,6 @@ ext {
     if(arch == 'amd64'){
         arch = 'x86_64'
     }
-    else{
-        arch = 'x86'
-    }
     opencvBinaryClassifer = os+'-'+arch;
 
 }
