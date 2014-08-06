@@ -3,6 +3,7 @@
  */
 
 
+import org.opencv.contrib.FaceRecognizer;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -36,6 +37,8 @@ public class DetectFaceDemo {
         for (Rect rect : faceDetections.toArray()) {
             Core.rectangle(image, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
         }
+
+        FaceRecognizer faceRecognizer;
 
         // Save the visualized detection.
         String filename = "build/faceDetection.png";
