@@ -38,9 +38,12 @@ repositories {
 
 dependencies {
     compile group: 'org.bytedeco', name: 'javacv', version: '0.9'
-    compile group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '2.4.9-0.8-2-SNAPSHOT', classifier: opencvBinaryClassifer
+    compile group: 'org.bytedeco.javacpp-presets', name: 'opencv', version: '2.4.9-0.9', classifier: opencvBinaryClassifer
+    compile group: 'org.bytedeco.javacpp-presets', name: 'ffmpeg', version: '2.3-0.9', classifier: opencvBinaryClassifer
+    compile group: 'org.bytedeco.javacpp-presets', name: 'libdc1394', version: '2.2.2-0.9', classifier: opencvBinaryClassifer
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
+
 
 ////Define the library path for the cv libs for any test tasks
 //tasks.withType(Test) {
